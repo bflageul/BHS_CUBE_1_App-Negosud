@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31729.503
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NegoSudMVC", "NegoSudMVC.csproj", "{60E2E3FA-A237-40CD-8283-B54FA230160B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NegoSudMVC", "NegoSudMVC.csproj", "{60E2E3FA-A237-40CD-8283-B54FA230160B}"
+EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "NegoSudDB", "..\Negosud_DB\NegoSudDB.sqlproj", "{5947F359-0F39-4DF8-ACAA-87FEAA4560BD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,12 @@ Global
 		{60E2E3FA-A237-40CD-8283-B54FA230160B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{60E2E3FA-A237-40CD-8283-B54FA230160B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{60E2E3FA-A237-40CD-8283-B54FA230160B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5947F359-0F39-4DF8-ACAA-87FEAA4560BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5947F359-0F39-4DF8-ACAA-87FEAA4560BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5947F359-0F39-4DF8-ACAA-87FEAA4560BD}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{5947F359-0F39-4DF8-ACAA-87FEAA4560BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5947F359-0F39-4DF8-ACAA-87FEAA4560BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5947F359-0F39-4DF8-ACAA-87FEAA4560BD}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
