@@ -1,0 +1,8 @@
+﻿CREATE TABLE [dbo].[Supplier]
+(
+	[Id] INT NOT NULL IDENTITY(1,1),
+	[Address_Id] INT NOT NULL,
+	[SupplierName] NVARCHAR(255) NOT NULL,
+	[PhoneNumber] NVARCHAR(15) NOT NULL,
+	CONSTRAINT PK_Supplier_Id PRIMARY KEY CLUSTERED (Id ASC)
+)
