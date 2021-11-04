@@ -1,0 +1,8 @@
+﻿CREATE TABLE [dbo].[Legal]
+(
+	[Id] INT NOT NULL IDENTITY(1,1),
+	[Supplier_Id] INT NOT NULL,
+	[Abbreviation] NVARCHAR(55) NOT NULL,
+	[LegalStatus] NVARCHAR(255) NOT NULL,
+	CONSTRAINT PK_Legal_Id PRIMARY KEY CLUSTERED (Id ASC)
+)
