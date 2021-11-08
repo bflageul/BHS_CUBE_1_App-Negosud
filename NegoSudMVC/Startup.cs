@@ -8,6 +8,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using NegoSudMVC.Data;
 
 namespace NegoSudMVC
 {
@@ -24,6 +26,8 @@ namespace NegoSudMVC
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddDbContext<NegosudContext>(options =>
+            options.UseSqlServer(Configuration.GetConnectionString("NegosudContext")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
