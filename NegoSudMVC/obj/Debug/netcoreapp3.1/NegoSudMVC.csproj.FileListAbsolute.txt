@@ -149,3 +149,8 @@ D:\11_DEV\3_CESI\2_CUBE_DEVELOPPER UNE APPLICATION\BHS_CUBE_1_NEGOSUD_APP\NegoSu
 D:\11_DEV\3_CESI\2_CUBE_DEVELOPPER UNE APPLICATION\BHS_CUBE_1_NEGOSUD_APP\NegoSudMVC\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.0\System.Runtime.Caching.dll
 D:\11_DEV\3_CESI\2_CUBE_DEVELOPPER UNE APPLICATION\BHS_CUBE_1_NEGOSUD_APP\NegoSudMVC\bin\Debug\netcoreapp3.1\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
 D:\11_DEV\3_CESI\2_CUBE_DEVELOPPER UNE APPLICATION\BHS_CUBE_1_NEGOSUD_APP\NegoSudMVC\obj\Debug\netcoreapp3.1\Razor\Views\Supplier\TableList.cshtml.g.cs
+D:\11_DEV\3_CESI\2_CUBE_DEVELOPPER UNE APPLICATION\BHS_CUBE_1_NEGOSUD_APP\NegoSudMVC\obj\Debug\netcoreapp3.1\Razor\Views\Suppliers\Create.cshtml.g.cs
+D:\11_DEV\3_CESI\2_CUBE_DEVELOPPER UNE APPLICATION\BHS_CUBE_1_NEGOSUD_APP\NegoSudMVC\obj\Debug\netcoreapp3.1\Razor\Views\Suppliers\Delete.cshtml.g.cs
+D:\11_DEV\3_CESI\2_CUBE_DEVELOPPER UNE APPLICATION\BHS_CUBE_1_NEGOSUD_APP\NegoSudMVC\obj\Debug\netcoreapp3.1\Razor\Views\Suppliers\Details.cshtml.g.cs
+D:\11_DEV\3_CESI\2_CUBE_DEVELOPPER UNE APPLICATION\BHS_CUBE_1_NEGOSUD_APP\NegoSudMVC\obj\Debug\netcoreapp3.1\Razor\Views\Suppliers\Edit.cshtml.g.cs
+D:\11_DEV\3_CESI\2_CUBE_DEVELOPPER UNE APPLICATION\BHS_CUBE_1_NEGOSUD_APP\NegoSudMVC\obj\Debug\netcoreapp3.1\Razor\Views\Suppliers\Index.cshtml.g.cs
