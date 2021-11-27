@@ -29,7 +29,13 @@ namespace NegosudApp
         {
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
-                    Configuration.GetConnectionString("NegosudContext")));
+                    Configuration.GetConnectionString("NegosudConStr")));
+            services.AddDatabaseDeveloperPageExceptionFilter();
+            
+            //Add connection string to NegosudDbContext
+            services.AddDbContext<NegosudDbContext>(options =>
+                options.UseSqlServer(
+                    Configuration.GetConnectionString("NegosudConStr")));
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
