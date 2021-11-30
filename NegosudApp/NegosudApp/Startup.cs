@@ -27,11 +27,22 @@ namespace NegosudApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("NegosudConStr")));
-            services.AddDatabaseDeveloperPageExceptionFilter();
-            
+            //Less password requirements during development
+            //services.AddIdentity<IdentityUser, IdentityRole>(option =>
+            //{
+            //    option.Password.RequiredLength = 1;
+            //    option.Password.RequireDigit = false;
+            //    option.Password.RequireUppercase = false;
+            //    option.Password.RequireNonAlphanumeric = false;
+            //});
+
+            ////Manage cookie for authorization
+            //services.ConfigureApplicationCookie(option =>
+            //{
+            //    option.Cookie.Name = "Identity.Cookie";
+            //    option.Cookie.Path = "/Home/Login";
+            //});
+
             //Add connection string to NegosudDbContext
             services.AddDbContext<NegosudDbContext>(options =>
                 options.UseSqlServer(
@@ -39,7 +50,7 @@ namespace NegosudApp
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                .AddEntityFrameworkStores<NegosudDbContext>();
             services.AddControllersWithViews();
         }
 
