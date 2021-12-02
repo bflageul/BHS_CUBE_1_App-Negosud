@@ -38,7 +38,7 @@ namespace NegosudApp.Data
         public virtual DbSet<ProductOrdered> ProductOrdereds { get; set; }
         public virtual DbSet<Supplier> Suppliers { get; set; }
         public virtual DbSet<User> Users { get; set; }
-        public virtual DbSet<RegisterModel> RegisterModels { get; set; }
+        //public virtual DbSet<RegisterModel> RegisterModels { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -52,51 +52,51 @@ namespace NegosudApp.Data
         {
             modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
 // Add modelbuilder for RegisterModel
-            modelBuilder.Entity<RegisterModel>(entity =>
-            {
-                entity.ToTable("Address");
+            //modelBuilder.Entity<RegisterModel>(entity =>
+            //{
+            //    entity.ToTable("Address");
 
-                entity.Property(e => e.City)
-                    .IsRequired()
-                    .HasMaxLength(255);
+            //    entity.Property(e => e.City)
+            //        .IsRequired()
+            //        .HasMaxLength(255);
 
-                entity.Property(e => e.Country)
-                    .IsRequired()
-                    .HasMaxLength(255);
+            //    entity.Property(e => e.Country)
+            //        .IsRequired()
+            //        .HasMaxLength(255);
 
-                entity.Property(e => e.PostalCode)
-                    .IsRequired()
-                    .HasMaxLength(6)
-                    .IsUnicode(false);
+            //    entity.Property(e => e.PostalCode)
+            //        .IsRequired()
+            //        .HasMaxLength(6)
+            //        .IsUnicode(false);
 
-                entity.Property(e => e.StreetName)
-                    .IsRequired()
-                    .HasMaxLength(255);
+            //    entity.Property(e => e.StreetName)
+            //        .IsRequired()
+            //        .HasMaxLength(255);
 
-                entity.Property(e => e.StreetNumber).HasMaxLength(255);
+            //    entity.Property(e => e.StreetNumber).HasMaxLength(255);
 
-                entity.Property(e => e.WayType).HasMaxLength(255);
-            });
+            //    entity.Property(e => e.WayType).HasMaxLength(255);
+            //});
 
-            modelBuilder.Entity<RegisterModel>(entity =>
-            {
-                entity.ToTable("User");
-                entity.Property(e => e.Firstname)
-                    .IsRequired()
-                    .HasMaxLength(255);
+            //modelBuilder.Entity<RegisterModel>(entity =>
+            //{
+            //    entity.ToTable("User");
+            //    entity.Property(e => e.Firstname)
+            //        .IsRequired()
+            //        .HasMaxLength(255);
 
-                entity.Property(e => e.HashPassword)
-                    .IsRequired()
-                    .HasMaxLength(255);
+            //    entity.Property(e => e.HashPassword)
+            //        .IsRequired()
+            //        .HasMaxLength(255);
 
-                entity.Property(e => e.Lastname)
-                    .IsRequired()
-                    .HasMaxLength(255);
+            //    entity.Property(e => e.Lastname)
+            //        .IsRequired()
+            //        .HasMaxLength(255);
 
-                entity.Property(e => e.Username)
-                    .IsRequired()
-                    .HasMaxLength(255);
-            });
+            //    entity.Property(e => e.Username)
+            //        .IsRequired()
+            //        .HasMaxLength(255);
+            //});
 
 
             modelBuilder.Entity<Address>(entity =>

@@ -13,15 +13,22 @@ namespace NegosudApp.Controllers
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly NegosudDbContext context;
+        private readonly NegosudDbContext _context;
         public RegisterController(
             UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager) 
+            SignInManager<IdentityUser> signInManager,
+            NegosudDbContext context) 
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _context = context;
         }
 
+        //private readonly NegosudDbContext _context;
+        //public RegisterController(NegosudDbContext context)
+        //{
+        //    _context = context;
+        //}
 
 //Register fonction
         //public IActionResult Register()
@@ -30,18 +37,49 @@ namespace NegosudApp.Controllers
         //}
 
         [HttpPost]
-        public IActionResult Register(string streetname, string postalcode, string city, string country)
+        public IActionResult Register(RegisterModel registerModel)
+            //string streetnumber, 
+            //string waytype, 
+            //string streetname, 
+            //string postalcode,
+            //string city,
+            //string country, 
+            //string username, 
+            //string firstname, 
+            //string lastname, 
+            //byte[] hashpassword,
+            //byte[] confirmpassword)
         {
-            
+
+            byte[] ConfirmPassword = registerModel.confirmpassword;
+
+            Client client = new Client()
+            {
+                Email = registerModel.email
+            };
+
+            User user = new User()
+            {
+                Username = registerModel.username,
+                Firstname = registerModel.firstname,
+                Lastname = registerModel.lastname,
+                HashPassword = registerModel.hashpassword
+            };
+
             Address address = new Address()
             {
-                StreetName = streetname,
-                PostalCode = postalcode,
-                City = city,
-                Country = country
+                StreetNumber = registerModel.streetnumber,
+                WayType = registerModel.waytype,
+                StreetName = registerModel.streetname,
+                PostalCode = registerModel.postalcode,
+                City = registerModel.city,
+                Country = registerModel.country
             };
-            context.Addresses.Add(address);
-            context.SaveChanges();
+
+            //_context.Clients.Add(client);
+            _context.Users.Add(user);
+            _context.Addresses.Add(address);
+            _context.SaveChanges();
             return View("../Home/Registered");
         }
         //[HttpPost]

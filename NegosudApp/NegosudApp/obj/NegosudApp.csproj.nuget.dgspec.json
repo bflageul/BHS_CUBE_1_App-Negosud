@@ -1,20 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "D:\\11_DEV\\3_CESI\\2_CUBE_DEVELOPPER UNE APPLICATION\\BHS_CUBE_1_NEGOSUD_APP\\NegosudApp\\NegosudApp\\NegosudApp.csproj": {}
+    "C:\\Users\\bflageul\\Work Folders\\04_CRASH_TEST\\3_NS_BHS\\BHS_CUBE_1_App-Negosud - stash\\NegosudApp\\NegosudApp\\NegosudApp.csproj": {}
   },
   "projects": {
-    "D:\\11_DEV\\3_CESI\\2_CUBE_DEVELOPPER UNE APPLICATION\\BHS_CUBE_1_NEGOSUD_APP\\NegosudApp\\NegosudApp\\NegosudApp.csproj": {
+    "C:\\Users\\bflageul\\Work Folders\\04_CRASH_TEST\\3_NS_BHS\\BHS_CUBE_1_App-Negosud - stash\\NegosudApp\\NegosudApp\\NegosudApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\11_DEV\\3_CESI\\2_CUBE_DEVELOPPER UNE APPLICATION\\BHS_CUBE_1_NEGOSUD_APP\\NegosudApp\\NegosudApp\\NegosudApp.csproj",
+        "projectUniqueName": "C:\\Users\\bflageul\\Work Folders\\04_CRASH_TEST\\3_NS_BHS\\BHS_CUBE_1_App-Negosud - stash\\NegosudApp\\NegosudApp\\NegosudApp.csproj",
         "projectName": "NegosudApp",
-        "projectPath": "D:\\11_DEV\\3_CESI\\2_CUBE_DEVELOPPER UNE APPLICATION\\BHS_CUBE_1_NEGOSUD_APP\\NegosudApp\\NegosudApp\\NegosudApp.csproj",
-        "packagesPath": "C:\\Users\\benja\\.nuget\\packages\\",
-        "outputPath": "D:\\11_DEV\\3_CESI\\2_CUBE_DEVELOPPER UNE APPLICATION\\BHS_CUBE_1_NEGOSUD_APP\\NegosudApp\\NegosudApp\\obj\\",
+        "projectPath": "C:\\Users\\bflageul\\Work Folders\\04_CRASH_TEST\\3_NS_BHS\\BHS_CUBE_1_App-Negosud - stash\\NegosudApp\\NegosudApp\\NegosudApp.csproj",
+        "packagesPath": "C:\\Users\\bflageul\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\bflageul\\Work Folders\\04_CRASH_TEST\\3_NS_BHS\\BHS_CUBE_1_App-Negosud - stash\\NegosudApp\\NegosudApp\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\benja\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\bflageul\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -22,7 +26,8 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "https://api.nuget.org/v3/index.json": {}
+          "https://api.nuget.org/v3/index.json": {},
+          "https://www.nuget.org/api/v2/": {}
         },
         "frameworks": {
           "net5.0": {
@@ -83,7 +88,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.403\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.100\\RuntimeIdentifierGraph.json"
         }
       }
     }
