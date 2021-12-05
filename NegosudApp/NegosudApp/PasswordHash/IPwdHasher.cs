@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace NegosudApp.PasswordHasher
+namespace NegosudApp.PasswordHash
 {
-    public interface IPasswordHasher
+    public interface IPwdHasher
     {
-        string Hash(string password);
+
+        // changing strin type to byte[] type
+        byte[] Hash(string password);
 
         (bool Verified, bool NeedsUpgrade) Check(string hash, string password);
     }

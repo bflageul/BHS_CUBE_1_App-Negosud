@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 //using System.Linq;
 //using System.Threading.Tasks;
-
 
 //using System.ComponentModel.DataAnnotations;
 //using System.Text;
@@ -20,23 +20,25 @@ namespace NegosudApp.Models
 {
     public class RegisterModel
     {
-        public virtual User Users { get; set; }
-        public string username { get; set; }
-        public string firstname { get; set; }
-        public string lastname { get; set; }
-        public byte[] hashpassword { get; set; }
+        internal readonly object addresses;
 
-        public virtual Address Addresses { get; set; }
+        public virtual User Users { get; set; }
+        [Required] public string username { get; set; }
+        [Required] public string firstname { get; set; }
+        [Required] public string lastname { get; set; }
+        [Required] public string hashpassword { get; set; }
+        [Compare("hashpassword", ErrorMessage = "Le mot de passe ne correspond pas à la confirmation !")] public string confirmpassword { get; set; }
+
+        public virtual ICollection<Address> Addresses { get; set; }
         public string streetnumber { get; set; }
         public string waytype { get; set; }
-        public string streetname { get; set; }
-        public string postalcode { get; set; }
-        public string city { get; set; }
-        public string country { get; set; }
-
-        public virtual Client Clients { get; set; }
-        public string email { get; set; }
-        public byte[] confirmpassword { get; set; }
+        [Required] public string streetname { get; set; }
+        [Required] public string postalcode { get; set; }
+        [Required] public string city { get; set; }
+        [Required] public string country { get; set; }
+        public virtual ICollection<Client> Clients { get; set; }
+        [Required] public string email { get; set; }
+        
 
 
 

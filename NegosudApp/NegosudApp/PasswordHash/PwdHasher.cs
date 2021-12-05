@@ -4,26 +4,30 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
+using NegosudApp.Models;
+using System.Text;
 
 //$"{iterations}.{salt}.{hash}"
 //c# handle password
 
-namespace NegosudApp.PasswordHasher
+namespace NegosudApp.PasswordHash
 {
 
-    public sealed class PasswordHasher : IPasswordHasher
+//Remove the sealed modifier
+    public class PwdHasher : IPwdHasher
     {
         private const int SaltSize = 16; // 128 bit 
         private const int KeySize = 32; // 256 bit
 
-        public PasswordHasher(IOptions<HashingOption> options)
+        public PwdHasher(IOptions<HashOption> options)
         {
             Options = options.Value;
         }
 
-        private HashingOption Options { get; }
+        private HashOption Options { get; }
 
-        public string Hash(string password)
+// changing strin type to byte[] type
+        public byte[] Hash(string password)
         {
             using (var algorithm = new Rfc2898DeriveBytes(
               password,
@@ -31,10 +35,13 @@ namespace NegosudApp.PasswordHasher
               Options.Iterations,
               HashAlgorithmName.SHA512))
             {
-                var key = Convert.ToBase64String(algorithm.GetBytes(KeySize));
-                var salt = Convert.ToBase64String(algorithm.Salt);
+                byte[] key = algorithm.GetBytes(KeySize);
+                byte[] salt = algorithm.Salt;
+                //var key = Convert.ToBase64String(algorithm.GetBytes(KeySize));
+                //var salt = Convert.ToBase64String(algorithm.Salt);
 
-                return $"{Options.Iterations}.{salt}.{key}";
+                return key;
+                //return $"{Options.Iterations}.{salt}.{key}";
             }
         }
 

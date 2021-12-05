@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using NegosudApp.Models;
 using NegosudApp.Data;
+using NegosudApp.PasswordHash;
 
 namespace NegosudApp.Controllers
 {
@@ -14,14 +15,18 @@ namespace NegosudApp.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly NegosudDbContext _context;
+        private PwdHasher _pwdHasher;
+
         public RegisterController(
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,
-            NegosudDbContext context) 
+            NegosudDbContext context,
+            PwdHasher pwdHasher)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _context = context;
+            _pwdHasher = pwdHasher;
         }
 
         //private readonly NegosudDbContext _context;
@@ -30,7 +35,7 @@ namespace NegosudApp.Controllers
         //    _context = context;
         //}
 
-//Register fonction
+        //Register fonction
         //public IActionResult Register()
         //{
         //    return View("../Home/Registered");
@@ -38,32 +43,13 @@ namespace NegosudApp.Controllers
 
         [HttpPost]
         public IActionResult Register(RegisterModel registerModel)
-            //string streetnumber, 
-            //string waytype, 
-            //string streetname, 
-            //string postalcode,
-            //string city,
-            //string country, 
-            //string username, 
-            //string firstname, 
-            //string lastname, 
-            //byte[] hashpassword,
-            //byte[] confirmpassword)
         {
-
-            byte[] ConfirmPassword = registerModel.confirmpassword;
-
-            Client client = new Client()
-            {
-                Email = registerModel.email
-            };
-
             User user = new User()
             {
                 Username = registerModel.username,
                 Firstname = registerModel.firstname,
                 Lastname = registerModel.lastname,
-                HashPassword = registerModel.hashpassword
+                HashPassword = _pwdHasher.Hash(registerModel.hashpassword)
             };
 
             Address address = new Address()
@@ -76,34 +62,24 @@ namespace NegosudApp.Controllers
                 Country = registerModel.country
             };
 
-            //_context.Clients.Add(client);
+            Client client = new Client()
+            {
+                Address = address,
+                Users = user,
+                Email = registerModel.email,
+                AddressId = address.Id,
+                UsersId = user.Id
+            };
+
+            _context.Clients.Add(client);
             _context.Users.Add(user);
             _context.Addresses.Add(address);
             _context.SaveChanges();
             return View("../Home/Registered");
         }
-        //[HttpPost]
-        //public async Task<IActionResult> Register(string username, string password)
-        //{
-        //    var user = new IdentityUser
-        //    {
-        //        UserName = username,
-        //        Email = ""
-        //    };
 
-        //    var result = await _userManager.CreateAsync(user);
-
-        //    if(result.Succeeded)
-        //    {
-        //        //sign user here
-        //    }
-
-        //    return View("../Home/Registered");
-        //}
-
-
-        // Login fonction
-        public IActionResult Login()
+            // Login fonction
+            public IActionResult Login()
         {
             return View("Index");
         }
