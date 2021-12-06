@@ -1,8 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using NegosudApp.Models;
 using NegosudApp.Data;
@@ -10,6 +7,8 @@ using NegosudApp.PasswordHash;
 
 namespace NegosudApp.Controllers
 {
+	[ApiController]
+	[Route("[controller]")]
     public class RegisterController : Controller
     {
         private readonly UserManager<IdentityUser> _userManager;
@@ -41,7 +40,7 @@ namespace NegosudApp.Controllers
         //    return View("../Home/Registered");
         //}
 
-        [HttpPost]
+        [HttpPost("register")]
         public IActionResult Register(RegisterModel registerModel)
         {
             User user = new User()
@@ -78,13 +77,14 @@ namespace NegosudApp.Controllers
             return View("../Home/Registered");
         }
 
-            // Login fonction
-            public IActionResult Login()
+        // Login fonction
+		[HttpGet("login")]
+        public IActionResult Login()
         {
             return View("Index");
         }
 
-        [HttpPost]
+        [HttpPost("login")]
         public async Task<IActionResult> Login(string username, string password)
         {
             var user = await _userManager.FindByNameAsync(username);
@@ -97,14 +97,15 @@ namespace NegosudApp.Controllers
                 if (signInResult.Succeeded)
                 {
                     //sign user here
-                    return RedirectToAction("Index");                    
+                    return RedirectToAction("Index");
                 }
             }
 
             return RedirectToAction("Index");
         }
 
-//Logout fonction
+		//Logout fonction
+		[HttpGet("logout")]
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
