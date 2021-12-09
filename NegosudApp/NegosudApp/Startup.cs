@@ -1,34 +1,35 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NegosudApp.Migrations;
-using NegosudApp.PasswordHash;
+using Microsoft.OpenApi.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Reflection;
+using System.IO;
+using NegosudApp.PasswordHash;
 
 namespace NegosudApp
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IWebHostEnvironment env, IConfiguration configuration)
         {
+			Env = env;
             Configuration = configuration;
         }
 
+		public IWebHostEnvironment Env { get; }
         public IConfiguration Configuration { get; }
 
-// This method gets called by the runtime. Use this method to add services to the container.
+		// This method gets called by the runtime. Use this method to add
+		// services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-//Less password requirements during development :
+			//Less password requirements during development :
             //services.AddIdentity<IdentityUser, IdentityRole>(option =>
             //{
             //    option.Password.RequiredLength = 1;
@@ -44,15 +45,16 @@ namespace NegosudApp
             //    option.Cookie.Path = "/Home/Login";
             //});
 
-//Add connection string to NegosudDbContext :
+			//Add connection string to NegosudDbContext :
             services.AddDbContext<NegosudDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("NegosudConStr")));
 
             //services.AddDatabaseDeveloperPageExceptionFilter();
 
-//Add the services allowing to resolve service for type 'NegosudApp.PasswordHash.PwdHasher'...
-//... while attempting to activate 'NegosudApp.Controllers.RegisterController'
+			//Add the services allowing to resolve service for type
+			//'NegosudApp.PasswordHash.PwdHasher' while attempting to activate
+			//'NegosudApp.Controllers.RegisterController'
             services.AddScoped<PwdHasher>();
 
             services.AddDefaultIdentity<IdentityUser>(options =>
@@ -60,6 +62,18 @@ namespace NegosudApp
                 .AddEntityFrameworkStores<NegosudDbContext>();
 
             services.AddControllersWithViews();
+
+            services.AddCors();
+            services.AddControllers();
+
+			// configure Swagger
+			services.AddSwaggerGen(c => {
+				c.SwaggerDoc("v1", new OpenApiInfo { Title = "server", Version = "v1" });
+				var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+				var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+				c.IncludeXmlComments(xmlPath);
+            });
+
         }
 
 // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -73,13 +87,24 @@ namespace NegosudApp
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+				// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            app.UseSwagger();
+            app.UseSwaggerUI(c => {
+				c.SwaggerEndpoint("/swagger/v1/swagger.json", "server v1");
+			});
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            // global cors policy
+            app.UseCors(x => x
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader());
 
             app.UseAuthentication();
             app.UseAuthorization();

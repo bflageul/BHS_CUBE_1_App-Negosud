@@ -1,8 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using NegosudApp.Models;
 using NegosudApp.Migrations;
@@ -10,6 +7,8 @@ using NegosudApp.PasswordHash;
 
 namespace NegosudApp.Controllers
 {
+	[ApiController]
+	[Route("[controller]")]
     public class RegisterController : Controller
     {
         private readonly UserManager<IdentityUser> _userManager;
@@ -41,7 +40,7 @@ namespace NegosudApp.Controllers
         //    return View("../Home/Registered");
         //}
 
-        [HttpPost]
+        [HttpPost("register")]
         public IActionResult Register(RegisterModel registerModel)
         {
             User user = new()

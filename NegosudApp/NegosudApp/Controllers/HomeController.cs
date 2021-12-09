@@ -1,11 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using NegosudApp.Models;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace NegosudApp.Controllers
 {
@@ -27,7 +23,7 @@ namespace NegosudApp.Controllers
         {
             return View();
         }
-        
+
         public IActionResult Register()
         {
             return View();
