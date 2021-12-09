@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using NegosudApp.Models;
-using NegosudApp.Data;
+using NegosudApp.Migrations;
 using NegosudApp.PasswordHash;
 
 namespace NegosudApp.Controllers
@@ -15,7 +15,7 @@ namespace NegosudApp.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly NegosudDbContext _context;
-        private PwdHasher _pwdHasher;
+        private readonly PwdHasher _pwdHasher;
 
         public RegisterController(
             UserManager<IdentityUser> userManager,
@@ -44,7 +44,7 @@ namespace NegosudApp.Controllers
         [HttpPost]
         public IActionResult Register(RegisterModel registerModel)
         {
-            User user = new User()
+            User user = new()
             {
                 Username = registerModel.username,
                 Firstname = registerModel.firstname,
@@ -52,7 +52,7 @@ namespace NegosudApp.Controllers
                 HashPassword = _pwdHasher.Hash(registerModel.hashpassword)
             };
 
-            Address address = new Address()
+            Address address = new()
             {
                 StreetNumber = registerModel.streetnumber,
                 WayType = registerModel.waytype,
@@ -62,7 +62,7 @@ namespace NegosudApp.Controllers
                 Country = registerModel.country
             };
 
-            Client client = new Client()
+            Client client = new()
             {
                 Address = address,
                 Users = user,
@@ -76,39 +76,6 @@ namespace NegosudApp.Controllers
             _context.Addresses.Add(address);
             _context.SaveChanges();
             return View("../Home/Registered");
-        }
-
-            // Login fonction
-            public IActionResult Login()
-        {
-            return View("Index");
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Login(string username, string password)
-        {
-            var user = await _userManager.FindByNameAsync(username);
-
-            if (user != null)
-            {
-                //sign in here
-                var signInResult = await _signInManager.PasswordSignInAsync(user, password, false, false);
-
-                if (signInResult.Succeeded)
-                {
-                    //sign user here
-                    return RedirectToAction("Index");                    
-                }
-            }
-
-            return RedirectToAction("Index");
-        }
-
-//Logout fonction
-        public async Task<IActionResult> Logout()
-        {
-            await _signInManager.SignOutAsync();
-            return RedirectToAction("Index");
         }
     }
 }

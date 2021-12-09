@@ -20,22 +20,10 @@ namespace NegosudApp.Models
 {
     public class LoginModel
     {
-        internal readonly object addresses;
-
         public virtual User Users { get; set; }
         [Required] public string username { get; set; }
         [Required] public string hashpassword { get; set; }
         public bool rememberme { get; set; }
 
-        public virtual ICollection<Address> Addresses { get; set; }
-        public string streetnumber { get; set; }
-        public string waytype { get; set; }
-        [Required] public string streetname { get; set; }
-        [Required] public string postalcode { get; set; }
-        [Required] public string city { get; set; }
-        [Required] public string country { get; set; }
-        public virtual ICollection<Client> Clients { get; set; }
-        [Required] public string email { get; set; }
-        
     }
 }

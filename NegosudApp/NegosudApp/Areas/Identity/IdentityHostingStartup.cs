@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using NegosudApp.Data;
+using NegosudApp.Migrations;
 
 [assembly: HostingStartup(typeof(NegosudApp.Areas.Identity.IdentityHostingStartup))]
 namespace NegosudApp.Areas.Identity
