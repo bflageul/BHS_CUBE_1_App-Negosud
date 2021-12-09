@@ -7,8 +7,6 @@ using NegosudApp.PasswordHash;
 
 namespace NegosudApp.Controllers
 {
-	[ApiController]
-	[Route("[controller]")]
     public class RegisterController : Controller
     {
         private readonly UserManager<IdentityUser> _userManager;
@@ -28,31 +26,15 @@ namespace NegosudApp.Controllers
             _pwdHasher = pwdHasher;
         }
 
-        //private readonly NegosudDbContext _context;
-        //public RegisterController(NegosudDbContext context)
-        //{
-        //    _context = context;
-        //}
-
-        //Register fonction
-        //public IActionResult Register()
-        //{
-        //    return View("../Home/Registered");
-        //}
-
-        [HttpPost("register")]
-        public IActionResult Register(RegisterModel registerModel)
-        {
-            User user = new()
-            {
+        public IActionResult Register(RegisterModel registerModel) {
+            User user = new User{
                 Username = registerModel.username,
                 Firstname = registerModel.firstname,
                 Lastname = registerModel.lastname,
                 HashPassword = _pwdHasher.Hash(registerModel.hashpassword)
             };
 
-            Address address = new()
-            {
+            Address address = new Address{
                 StreetNumber = registerModel.streetnumber,
                 WayType = registerModel.waytype,
                 StreetName = registerModel.streetname,
@@ -61,8 +43,7 @@ namespace NegosudApp.Controllers
                 Country = registerModel.country
             };
 
-            Client client = new()
-            {
+            Client client = new Client{
                 Address = address,
                 Users = user,
                 Email = registerModel.email,
