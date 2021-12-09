@@ -1,0 +1,98 @@
+﻿@using NegosudApp.Models;
+@model RegisterModel
+
+@{
+    ViewData["Title"] = "Créer votre compte personnel";
+}
+
+<h1>@ViewData["Title"]</h1>
+<form action="../Home" method="post">
+    <div class="row">
+        <div class="col-md-6">
+            <h4>Identifiant et mot de passe</h4>
+            <hr />
+            @*<div asp-validation-summary="All" class="text-danger"></div>*@
+            <div class="form-group">
+                <label  asp-for="username">Nom d'utilisateur</label>
+                <input asp-for="username" class="form-control" />
+                <span asp-validation-for="username" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="email">Adresse mail</label>
+                <input asp-for="email" class="form-control" />
+                <span asp-validation-for="email" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="firstname">Prénom</label>
+                <input asp-for="firstname" class="form-control" />
+                <span asp-validation-for="firstname" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="lastname">Nom</label>
+                <input asp-for="lastname" class="form-control" />
+                <span asp-validation-for="lastname" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="hashpassword">Mot de passe</label>
+                <input asp-for="hashpassword" class="form-control" />
+                <span asp-validation-for="hashpassword" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="confirmpassword">Confirmation du mot de passe</label>
+                <input asp-for="confirmpassword" class="form-control" />
+                <span asp-validation-for="confirmpassword" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-">
+            <h4>Votre adresse</h4>
+            <hr />
+            @*<div asp-validation-summary="All" class="text-danger"></div>*@
+            <div class="form-group">
+                <label asp-for="streetnumber">Numéro de rue</label>
+                <input asp-for="streetnumber" class="form-control" />
+                <span asp-validation-for="streetnumber" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="waytype">Type de voie</label>
+                <input asp-for="waytype" class="form-control" />
+                <span asp-validation-for="waytype" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="streetname">Nom de rue</label>
+                <input asp-for="streetname" class="form-control" />
+                <span asp-validation-for="streetname" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="postalcode">Code postal</label>
+                <input asp-for="postalcode" class="form-control" />
+                <span asp-validation-for="postalcode" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="city">Ville</label>
+                <input asp-for="city" class="form-control" />
+                <span asp-validation-for="city" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="country">Pays</label>
+                <input asp-for="country" class="form-control" />
+                <span asp-validation-for="country" class="text-danger"></span>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary" asp-controller="Register" asp-action="Register">S'inscrire</button>
+    </div>
+</form>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

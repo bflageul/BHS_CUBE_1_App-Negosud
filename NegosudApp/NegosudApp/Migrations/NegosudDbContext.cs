@@ -1,21 +1,24 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Microsoft.EntityFrameworkCore;
+using NegosudApp.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using System.Text;
 
-#nullable disable
 
-namespace NegosudApp.Models
+namespace NegosudApp.Migrations
 {
-    public partial class dbNegoSudContext : DbContext
-    {
-        public dbNegoSudContext()
-        {
-        }
+    public partial class NegosudDbContext: DbContext    {
 
-        public dbNegoSudContext(DbContextOptions<dbNegoSudContext> options)
+        public NegosudDbContext(DbContextOptions<NegosudDbContext> options)
             : base(options)
         {
         }
+        //public NegosudDbContext()
+        //{
+        //}
 
         public virtual DbSet<Address> Addresses { get; set; }
         public virtual DbSet<AddressUser> AddressUsers { get; set; }
@@ -30,12 +33,13 @@ namespace NegosudApp.Models
         public virtual DbSet<ProductOrdered> ProductOrdereds { get; set; }
         public virtual DbSet<Supplier> Suppliers { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        //public virtual DbSet<RegisterModel> RegisterModels { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Name=ConnectionStrings:NegosudContext");
+                optionsBuilder.UseSqlServer("Name=ConnectionStrings:NegosudConStr");
             }
         }
 
@@ -338,9 +342,12 @@ namespace NegosudApp.Models
                     .IsRequired()
                     .HasMaxLength(255);
 
+// to apply this modification, I replaced 255 by int.MaxValue, then add-migration in PM
+// then script-migration and finally select ALTER TABLE User..., right click Execute.
+// These action modified the database schema (Hashpassword type).
                 entity.Property(e => e.HashPassword)
                     .IsRequired()
-                    .HasMaxLength(255);
+                    .HasMaxLength(int.MaxValue);
 
                 entity.Property(e => e.Lastname)
                     .IsRequired()
