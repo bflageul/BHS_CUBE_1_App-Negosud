@@ -8,6 +8,7 @@ using NegosudApp.Migrations;
 using Microsoft.AspNetCore.Identity;
 using NegosudApp.PasswordHash;
 using Microsoft.Data.SqlClient;
+using System.Security.Cryptography;
 
 namespace NegosudApp.Controllers
 {
@@ -37,16 +38,39 @@ namespace NegosudApp.Controllers
             return View("Error");
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> Login(string username, string password)
-        //{
-        //    string ConStr = _context.
-        //    SqlCommand cmd = new SqlCommand("Select count(*) from Register where Username= @Username", NegosudConStr);
-        //    }
+//Login test from controller (!! some fonctions should move to PwdHasher!!)
+        [HttpPost]
+        public IActionResult Login(string username, string password)
+        {
+            var user = _context.Users.Where(b => b.Username == username).FirstOrDefault();
 
+            byte[] stockedKey = user.HashPassword;
 
+            byte[] stockedSalt = new byte[16];
+            Array.Copy(stockedKey, 2, stockedSalt, 0, 16);
 
+            Rfc2898DeriveBytes algorithm = new(
+              password,
+              stockedSalt,
+              10000,  //Options.Iterations,              
+              HashAlgorithmName.SHA512);
 
+            byte[] hashsalt = algorithm.GetBytes(16);
+            byte[] hashpass = algorithm.GetBytes(20);
+
+            byte[] keyToCheck = new byte[36];
+            Array.Copy(hashsalt, 0, keyToCheck, 0, 16);
+            Array.Copy(hashpass, 0, keyToCheck, 16, 20);
+
+            if (keyToCheck == stockedKey)
+            {
+                return RedirectToAction("Error");
+            }
+            else
+            {
+                return RedirectToAction("Registered");
+            }
+        }
 
 
 
