@@ -31,8 +31,7 @@ namespace NegosudApp.Controllers
             _pwdHasher = pwdHasher;
         }
 
-
-// Login fonction
+        // Login fonction
         public IActionResult Login()
         {
             return View("Error");
@@ -40,8 +39,11 @@ namespace NegosudApp.Controllers
 
 //Login test from controller (!! some fonctions should move to PwdHasher!!)
         [HttpPost]
-        public IActionResult Login(string username, string password)
+        public IActionResult Login(LoginModel loginModel)
         {
+            string username = loginModel.username;
+            string password = loginModel.hashpassword;
+
             var user = _context.Users.Where(b => b.Username == username).FirstOrDefault();
 
             byte[] stockedKey = user.HashPassword;
@@ -49,7 +51,7 @@ namespace NegosudApp.Controllers
             byte[] stockedSalt = new byte[16];
             Array.Copy(stockedKey, 2, stockedSalt, 0, 16);
 
-            Rfc2898DeriveBytes algorithm = new(
+            Rfc2898DeriveBytes algorithm = new (
               password,
               stockedSalt,
               10000,  //Options.Iterations,              
@@ -64,11 +66,11 @@ namespace NegosudApp.Controllers
 
             if (keyToCheck == stockedKey)
             {
-                return RedirectToAction("Error");
+                return View("../Home/Logged");
             }
             else
             {
-                return RedirectToAction("Registered");
+                return View("../Home/Register");
             }
         }
 

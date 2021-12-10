@@ -46,7 +46,7 @@ namespace NegosudApp.PasswordHash
             Array.Copy(hashsalt, 0, hashBytes, 0, SaltSize);
             Array.Copy(hashpass, 0, hashBytes, SaltSize, PassSize);
 
-            return hashBytes;
+            return hashpass;
 
 
             //byte[] key = algorithm.GetBytes(PassSize + SaltSize);

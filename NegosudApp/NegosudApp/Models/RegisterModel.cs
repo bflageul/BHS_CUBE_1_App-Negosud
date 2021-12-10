@@ -33,11 +33,11 @@ namespace NegosudApp.Models
         public string streetnumber { get; set; }
         public string waytype { get; set; }
         [Required] public string streetname { get; set; }
-        [Required] public string postalcode { get; set; }
+        [Required] [MaxLength(6)] public string postalcode { get; set; }
         [Required] public string city { get; set; }
         [Required] public string country { get; set; }
         public virtual ICollection<Client> Clients { get; set; }
-        [Required] public string email { get; set; }
+        [Required] [EmailAddress] public string email { get; set; }
         
 
 
