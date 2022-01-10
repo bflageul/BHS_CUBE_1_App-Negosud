@@ -23,14 +23,14 @@
                     <input asp-for="hashpassword" class="form-control" />
                     <span asp-validation-for="hashpassword" class="text-danger"></span>
                 </div>
-                <div class="form-group">
+                @*<div class="form-group">
                     <div class="checkbox">
                         <label asp-for="rememberme">
                             <input asp-for="rememberme" />
                             @Html.DisplayNameFor(m => m.rememberme)
                         </label>
                     </div>
-                </div>
+                </div>*@
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary" asp-controller="Log" asp-action="Login">Log in</button>
                 </div>

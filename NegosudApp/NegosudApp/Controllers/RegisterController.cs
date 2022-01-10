@@ -1,6 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Identity;
-using System.Threading.Tasks;
 using NegosudApp.Models;
 using NegosudApp.Migrations;
 using NegosudApp.PasswordHash;
@@ -9,19 +7,13 @@ namespace NegosudApp.Controllers
 {
     public class RegisterController : Controller
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
         private readonly NegosudDbContext _context;
-        private readonly PwdHasher _pwdHasher;
+        private readonly IPwdHasher _pwdHasher;
 
         public RegisterController(
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager,
             NegosudDbContext context,
             PwdHasher pwdHasher)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
             _context = context;
             _pwdHasher = pwdHasher;
         }

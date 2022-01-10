@@ -20,7 +20,7 @@ namespace NegosudApp.Models
 {
     public class RegisterModel
     {
-        internal readonly object addresses;
+        //internal readonly object addresses;
 
         public virtual User Users { get; set; }
         [Required] public string username { get; set; }

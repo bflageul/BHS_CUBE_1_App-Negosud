@@ -14,57 +14,32 @@ namespace NegosudApp.Controllers
 {
     public class LogController : Controller
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
         private readonly NegosudDbContext _context;
-        private readonly PwdHasher _pwdHasher;
+        private readonly IPwdHasher _pwdHasher;
 
         public LogController(
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager,
             NegosudDbContext context,
             PwdHasher pwdHasher)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
             _context = context;
             _pwdHasher = pwdHasher;
         }
 
-        // Login fonction
+        // Login method returning View
         public IActionResult Login()
         {
             return View("Error");
         }
 
-//Login test from controller (!! some fonctions should move to PwdHasher!!)
+        // Login test from controller 
         [HttpPost]
         public IActionResult Login(LoginModel loginModel)
         {
             string username = loginModel.username;
             string password = loginModel.hashpassword;
+            bool logResult = _pwdHasher.Check(username, password);
 
-            var user = _context.Users.Where(b => b.Username == username).FirstOrDefault();
-
-            byte[] stockedKey = user.HashPassword;
-
-            byte[] stockedSalt = new byte[16];
-            Array.Copy(stockedKey, 2, stockedSalt, 0, 16);
-
-            Rfc2898DeriveBytes algorithm = new (
-              password,
-              stockedSalt,
-              10000,  //Options.Iterations,              
-              HashAlgorithmName.SHA512);
-
-            byte[] hashsalt = algorithm.GetBytes(16);
-            byte[] hashpass = algorithm.GetBytes(20);
-
-            byte[] keyToCheck = new byte[36];
-            Array.Copy(hashsalt, 0, keyToCheck, 0, 16);
-            Array.Copy(hashpass, 0, keyToCheck, 16, 20);
-
-            if (keyToCheck == stockedKey)
+            if (logResult is true)
             {
                 return View("../Home/Logged");
             }
@@ -104,10 +79,10 @@ namespace NegosudApp.Controllers
 
 
         //Logout fonction
-        public async Task<IActionResult> Logout()
-        {
-            await _signInManager.SignOutAsync();
-            return RedirectToAction("Index");
-        }
+        //public async Task<IActionResult> Logout()
+        //{
+        //    await _signInManager.SignOutAsync();
+        //    return RedirectToAction("Index");
+        //}
     }
 }
