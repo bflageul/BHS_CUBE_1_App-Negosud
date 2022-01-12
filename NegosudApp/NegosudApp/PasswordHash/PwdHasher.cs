@@ -3,13 +3,17 @@ using System;
 using System.Linq;
 using System.Security.Cryptography;
 using NegosudApp.Migrations;
+using Microsoft.AspNetCore.Mvc;
+using NegosudApp.Controllers;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Diagnostics;
 
 namespace NegosudApp.PasswordHash
 {
 
     // IPwdHasher interface implementation, but no class can inherit from PwdHasher
     public sealed class PwdHasher : IPwdHasher
-        { 
+    {
         // Salt size definition, in order to match with 128 bits variable
         private const int SaltSize = 16;
         // Password size definition, in order to match with 512 bits variable
@@ -17,7 +21,7 @@ namespace NegosudApp.PasswordHash
 
         // Declare _context as a NegosudDbContext type
         // (private read-only member variable of type NegosudDbContext)
-        private readonly NegosudDbContext _context;  
+        private readonly NegosudDbContext _context;
 
         // Declare Option as a HashOption type      
         private HashOption Options { get; }
@@ -56,33 +60,44 @@ namespace NegosudApp.PasswordHash
             return hashBytes;
         }
 
-
-
         // Verify compatibility between stored and submitted password
         public bool Check(string username, string password)
         {
 
-            var user = _context.Users.Where(b => b.Username == username).FirstOrDefault();
+            bool result = false;
 
-            byte[] stockedKey = user.HashPassword;
+            if (_context.Users.Where(b => b.Username == username).FirstOrDefault() is null)
+            {
+                Debug.Write("Erreur : utilisateur inconnu");
+            }
+            else
+            {
+                var user = _context.Users.Where(b => b.Username == username).FirstOrDefault();
+                byte[] stockedKey = user.HashPassword;
+                byte[] stockedSalt = new byte[SaltSize];
+                Array.Copy(stockedKey, 0, stockedSalt, 0, SaltSize);
 
-            byte[] stockedSalt = new byte[SaltSize];
-            Array.Copy(stockedKey, 0, stockedSalt, 0, SaltSize);
+                Rfc2898DeriveBytes algorithm = new(
+                  password,
+                  stockedSalt,
+                  Options.Iterations,
+                  HashAlgorithmName.SHA512);
 
-            Rfc2898DeriveBytes algorithm = new(
-              password,
-              stockedSalt,
-              Options.Iterations,              
-              HashAlgorithmName.SHA512);
+                byte[] hashedPass = algorithm.GetBytes(PassSize);
 
-            byte[] hashedPass = algorithm.GetBytes(PassSize);
-
-            byte[] keyToCheck = new byte[SaltSize + PassSize];
-            Array.Copy(stockedSalt, 0, keyToCheck, 0, SaltSize);
-            Array.Copy(hashedPass, 0, keyToCheck, SaltSize, PassSize);
-
-
-            if (stockedKey.SequenceEqual(keyToCheck))
+                byte[] keyToCheck = new byte[SaltSize + PassSize];
+                Array.Copy(stockedSalt, 0, keyToCheck, 0, SaltSize);
+                Array.Copy(hashedPass, 0, keyToCheck, SaltSize, PassSize);
+                if (stockedKey.SequenceEqual(keyToCheck))
+                {
+                    result = true;
+                }
+                else
+                {
+                    result = false;
+                }
+            }
+            if (result == true)
             {
                 return true;
             }
@@ -90,7 +105,6 @@ namespace NegosudApp.PasswordHash
             {
                 return false;
             }
-
         }
     }
 }
