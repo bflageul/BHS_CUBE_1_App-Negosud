@@ -8,46 +8,45 @@ using NegosudApp.Migrations;
 using Microsoft.AspNetCore.Identity;
 using NegosudApp.PasswordHash;
 using Microsoft.Data.SqlClient;
-using System.Security.Cryptography;
 
 namespace NegosudApp.Controllers
 {
     public class LogController : Controller
     {
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<IdentityUser> _signInManager;
         private readonly NegosudDbContext _context;
-        private readonly IPwdHasher _pwdHasher;
+        private readonly PwdHasher _pwdHasher;
 
         public LogController(
+            UserManager<IdentityUser> userManager,
+            SignInManager<IdentityUser> signInManager,
             NegosudDbContext context,
             PwdHasher pwdHasher)
         {
+            _userManager = userManager;
+            _signInManager = signInManager;
             _context = context;
             _pwdHasher = pwdHasher;
         }
 
-        // Login method returning View
+
+// Login fonction
         public IActionResult Login()
         {
             return View("Error");
         }
 
-        // Login test from controller 
-        [HttpPost]
-        public IActionResult Login(LoginModel loginModel)
-        {
-            string username = loginModel.username;
-            string password = loginModel.hashpassword;
-            bool logResult = _pwdHasher.Check(username, password);
+        //[HttpPost]
+        //public async Task<IActionResult> Login(string username, string password)
+        //{
+        //    string ConStr = _context.
+        //    SqlCommand cmd = new SqlCommand("Select count(*) from Register where Username= @Username", NegosudConStr);
+        //    }
 
-            if (logResult is true)
-            {
-                return View("../Home/Logged");
-            }
-            else
-            {
-                return View("../Home/Register");
-            }
-        }
+
+
+
 
 
 
@@ -79,10 +78,10 @@ namespace NegosudApp.Controllers
 
 
         //Logout fonction
-        //public async Task<IActionResult> Logout()
-        //{
-        //    await _signInManager.SignOutAsync();
-        //    return RedirectToAction("Index");
-        //}
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Index");
+        }
     }
 }

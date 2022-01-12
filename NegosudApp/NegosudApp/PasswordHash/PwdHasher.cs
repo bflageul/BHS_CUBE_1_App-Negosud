@@ -1,96 +1,138 @@
 ﻿using Microsoft.Extensions.Options;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
-using NegosudApp.Migrations;
+using System.Threading.Tasks;
+using NegosudApp.Models;
+using System.Text;
+
+//$"{iterations}.{salt}.{hash}"
+//c# handle password
 
 namespace NegosudApp.PasswordHash
 {
 
-    // IPwdHasher interface implementation, but no class can inherit from PwdHasher
-    public sealed class PwdHasher : IPwdHasher
-        { 
-        // Salt size definition, in order to match with 128 bits variable
-        private const int SaltSize = 16;
-        // Password size definition, in order to match with 512 bits variable
-        private const int PassSize = 64;
+    //Remove the sealed modifier
+    public sealed class PwdHasher //: IPwdHasher
+    {
+        private const int SaltSize = 16; // 128 bit 
+        private const int PassSize = 20;  // ? bit
+        readonly byte[] salt = new byte[SaltSize];
 
-        // Declare _context as a NegosudDbContext type
-        // (private read-only member variable of type NegosudDbContext)
-        private readonly NegosudDbContext _context;  
-
-        // Declare Option as a HashOption type      
-        private HashOption Options { get; }
-
-        // Call HashOption and NegosudDbContext as PwdHasher ctor parameters
-        // and initialize them in ctor
-        public PwdHasher(
-            IOptions<HashOption> options,
-            NegosudDbContext context)
+        public PwdHasher(IOptions<HashOption> options)
         {
             Options = options.Value;
-            _context = context;
         }
 
+        private HashOption Options { get; }
 
-
-        // Hash method using Rfc2898DeriveBytes algorithm with salt
+// changing string type to byte[] type
         public byte[] Hash(string password)
         {
-            byte[] salt = new byte[SaltSize];
-            var rng = RandomNumberGenerator.Create();
+            var rng =  RandomNumberGenerator.Create();
             rng.GetNonZeroBytes(salt);
 
-            Rfc2898DeriveBytes algorithm = new(
+            Rfc2898DeriveBytes algorithm = new (
               password,
               salt,
               Options.Iterations,
               HashAlgorithmName.SHA512);
 
+            byte[] hashsalt = algorithm.GetBytes(SaltSize);
             byte[] hashpass = algorithm.GetBytes(PassSize);
-
-            byte[] hashBytes = new byte[PassSize + SaltSize];
-            Array.Copy(salt, 0, hashBytes, 0, SaltSize);
+            
+            byte[] hashBytes = new byte[SaltSize+PassSize];
+            Array.Copy(hashsalt, 0, hashBytes, 0, SaltSize);
             Array.Copy(hashpass, 0, hashBytes, SaltSize, PassSize);
 
             return hashBytes;
+
+
+            //byte[] key = algorithm.GetBytes(PassSize + SaltSize);
+            //return key;
+
+            //using (var algorithm = new Rfc2898DeriveBytes(
+            //  password,
+            //  SaltSize,
+            //  Options.Iterations,
+            //  HashAlgorithmName.SHA512))
+            //{
+            //byte[] key = algorithm.GetBytes(PassSize+SaltSize);
+            //    byte[] salt = algorithm.Salt;
+            //    //var key = Convert.ToBase64String(algorithm.GetBytes(KeySize));
+            //    //var salt = Convert.ToBase64String(algorithm.Salt);
+
+            //return key;
+            //    return [salt].[key];
+            //}
         }
 
 
 
-        // Verify compatibility between stored and submitted password
-        public bool Check(string username, string password)
-        {
 
-            var user = _context.Users.Where(b => b.Username == username).FirstOrDefault();
+        //public (bool Verified, bool NeedsUpgrade) Check(byte[] hashBytes, string password)
+        //{
+        //    var parts = hashBytes.Split('.', 3);
+        //    hashBytes.
+        //    if (parts.Length != 3)
+        //    {
+        //        throw new FormatException("Unexpected hash format. " +
+        //          "Should be formatted as `{iterations}.{salt}.{hash}`");
+        //    }
 
-            byte[] stockedKey = user.HashPassword;
+        //    var iterations = Convert.ToInt32(parts[0]);
+        //    var salt = Convert.FromBase64String(parts[1]);
+        //    var key = Convert.FromBase64String(parts[2]);
 
-            byte[] stockedSalt = new byte[SaltSize];
-            Array.Copy(stockedKey, 0, stockedSalt, 0, SaltSize);
+        //    var needsUpgrade = iterations != Options.Iterations;
 
-            Rfc2898DeriveBytes algorithm = new(
-              password,
-              stockedSalt,
-              Options.Iterations,              
-              HashAlgorithmName.SHA512);
+        //    using (var algorithm = new Rfc2898DeriveBytes(
+        //      password,
+        //      salt,
+        //      iterations,
+        //      HashAlgorithmName.SHA512))
+        //    {
+        //        var keyToCheck = algorithm.GetBytes(KeySize);
 
-            byte[] hashedPass = algorithm.GetBytes(PassSize);
+        //        var verified = keyToCheck.SequenceEqual(key);
 
-            byte[] keyToCheck = new byte[SaltSize + PassSize];
-            Array.Copy(stockedSalt, 0, keyToCheck, 0, SaltSize);
-            Array.Copy(hashedPass, 0, keyToCheck, SaltSize, PassSize);
+        //        return (verified, needsUpgrade);
+        //    }
+        //}
 
 
-            if (stockedKey.SequenceEqual(keyToCheck))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
 
-        }
+
+        //public (bool Verified, bool NeedsUpgrade) Check(string hash, string password)
+        //{
+        //    var parts = hash.Split('.', 3);
+
+        //    if (parts.Length != 3)
+        //    {
+        //        throw new FormatException("Unexpected hash format. " +
+        //          "Should be formatted as `{iterations}.{salt}.{hash}`");
+        //    }
+
+        //    var iterations = Convert.ToInt32(parts[0]);
+        //    var salt = Convert.FromBase64String(parts[1]);
+        //    var key = Convert.FromBase64String(parts[2]);
+
+        //    var needsUpgrade = iterations != Options.Iterations;
+
+        //    using (var algorithm = new Rfc2898DeriveBytes(
+        //      password,
+        //      salt,
+        //      iterations,
+        //      HashAlgorithmName.SHA512))
+        //    {
+        //        var keyToCheck = algorithm.GetBytes(KeySize);
+
+        //        var verified = keyToCheck.SequenceEqual(key);
+
+        //        return (verified, needsUpgrade);
+        //    }
+        //}
     }
+
 }

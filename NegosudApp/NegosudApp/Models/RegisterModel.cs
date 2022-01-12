@@ -20,7 +20,7 @@ namespace NegosudApp.Models
 {
     public class RegisterModel
     {
-        //internal readonly object addresses;
+        internal readonly object addresses;
 
         public virtual User Users { get; set; }
         [Required] public string username { get; set; }
@@ -33,11 +33,11 @@ namespace NegosudApp.Models
         public string streetnumber { get; set; }
         public string waytype { get; set; }
         [Required] public string streetname { get; set; }
-        [Required] [MaxLength(6)] public string postalcode { get; set; }
+        [Required] public string postalcode { get; set; }
         [Required] public string city { get; set; }
         [Required] public string country { get; set; }
         public virtual ICollection<Client> Clients { get; set; }
-        [Required] [EmailAddress] public string email { get; set; }
+        [Required] public string email { get; set; }
         
 
 
