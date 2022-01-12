@@ -10,8 +10,7 @@ using System.Text;
 
 namespace NegosudApp.Migrations
 {
-    public partial class NegosudDbContext : DbContext
-    {
+    public partial class NegosudDbContext: DbContext    {
 
         public NegosudDbContext(DbContextOptions<NegosudDbContext> options)
             : base(options)

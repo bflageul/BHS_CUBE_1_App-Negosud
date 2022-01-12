@@ -1,32 +1,58 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity;
+using System.Threading.Tasks;
 using NegosudApp.Models;
 using NegosudApp.Migrations;
 using NegosudApp.PasswordHash;
 
 namespace NegosudApp.Controllers
 {
+	[ApiController]
+	[Route("[controller]")]
     public class RegisterController : Controller
     {
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<IdentityUser> _signInManager;
         private readonly NegosudDbContext _context;
-        private readonly IPwdHasher _pwdHasher;
+        private readonly PwdHasher _pwdHasher;
 
         public RegisterController(
+            UserManager<IdentityUser> userManager,
+            SignInManager<IdentityUser> signInManager,
             NegosudDbContext context,
             PwdHasher pwdHasher)
         {
+            _userManager = userManager;
+            _signInManager = signInManager;
             _context = context;
             _pwdHasher = pwdHasher;
         }
 
-        public IActionResult Register(RegisterModel registerModel) {
-            User user = new User{
+        //private readonly NegosudDbContext _context;
+        //public RegisterController(NegosudDbContext context)
+        //{
+        //    _context = context;
+        //}
+
+        //Register fonction
+        //public IActionResult Register()
+        //{
+        //    return View("../Home/Registered");
+        //}
+
+        [HttpPost("register")]
+        public IActionResult Register(RegisterModel registerModel)
+        {
+            User user = new()
+            {
                 Username = registerModel.username,
                 Firstname = registerModel.firstname,
                 Lastname = registerModel.lastname,
                 HashPassword = _pwdHasher.Hash(registerModel.hashpassword)
             };
 
-            Address address = new Address{
+            Address address = new()
+            {
                 StreetNumber = registerModel.streetnumber,
                 WayType = registerModel.waytype,
                 StreetName = registerModel.streetname,
@@ -35,7 +61,8 @@ namespace NegosudApp.Controllers
                 Country = registerModel.country
             };
 
-            Client client = new Client{
+            Client client = new()
+            {
                 Address = address,
                 Users = user,
                 Email = registerModel.email,

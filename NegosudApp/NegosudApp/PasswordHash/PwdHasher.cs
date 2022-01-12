@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using NegosudApp.Migrations;
@@ -7,6 +8,9 @@ using Microsoft.AspNetCore.Mvc;
 using NegosudApp.Controllers;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Diagnostics;
+
+//$"{iterations}.{salt}.{hash}"
+//c# handle password
 
 namespace NegosudApp.PasswordHash
 {
@@ -33,36 +37,58 @@ namespace NegosudApp.PasswordHash
             NegosudDbContext context)
         {
             Options = options.Value;
-            _context = context;
         }
 
+        private HashOption Options { get; }
 
-
-        // Hash method using Rfc2898DeriveBytes algorithm with salt
+// changing string type to byte[] type
         public byte[] Hash(string password)
         {
-            byte[] salt = new byte[SaltSize];
-            var rng = RandomNumberGenerator.Create();
+            var rng =  RandomNumberGenerator.Create();
             rng.GetNonZeroBytes(salt);
 
-            Rfc2898DeriveBytes algorithm = new(
+            Rfc2898DeriveBytes algorithm = new (
               password,
               salt,
               Options.Iterations,
               HashAlgorithmName.SHA512);
 
+            byte[] hashsalt = algorithm.GetBytes(SaltSize);
             byte[] hashpass = algorithm.GetBytes(PassSize);
-
-            byte[] hashBytes = new byte[PassSize + SaltSize];
-            Array.Copy(salt, 0, hashBytes, 0, SaltSize);
+            
+            byte[] hashBytes = new byte[SaltSize+PassSize];
+            Array.Copy(hashsalt, 0, hashBytes, 0, SaltSize);
             Array.Copy(hashpass, 0, hashBytes, SaltSize, PassSize);
 
             return hashBytes;
+
+
+            //byte[] key = algorithm.GetBytes(PassSize + SaltSize);
+            //return key;
+
+            //using (var algorithm = new Rfc2898DeriveBytes(
+            //  password,
+            //  SaltSize,
+            //  Options.Iterations,
+            //  HashAlgorithmName.SHA512))
+            //{
+            //byte[] key = algorithm.GetBytes(PassSize+SaltSize);
+            //    byte[] salt = algorithm.Salt;
+            //    //var key = Convert.ToBase64String(algorithm.GetBytes(KeySize));
+            //    //var salt = Convert.ToBase64String(algorithm.Salt);
+
+            //return key;
+            //    return [salt].[key];
+            //}
         }
 
-        // Verify compatibility between stored and submitted password
-        public bool Check(string username, string password)
-        {
+        //    using (var algorithm = new Rfc2898DeriveBytes(
+        //      password,
+        //      salt,
+        //      iterations,
+        //      HashAlgorithmName.SHA512))
+        //    {
+        //        var keyToCheck = algorithm.GetBytes(KeySize);
 
             bool result = false;
 
