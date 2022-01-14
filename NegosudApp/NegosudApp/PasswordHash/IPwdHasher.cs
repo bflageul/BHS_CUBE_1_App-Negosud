@@ -7,10 +7,10 @@ namespace NegosudApp.PasswordHash
 {
     public interface IPwdHasher
     {
-
-        // changing strin type to byte[] type
+        // Hash method with password privided by user as parameter 
         byte[] Hash(string password);
 
-        (bool Verified, bool NeedsUpgrade) Check(string hash, string password);
+        // Check method with username and password privided by user as parameters
+        bool Check(string username, string password);
     }
 }

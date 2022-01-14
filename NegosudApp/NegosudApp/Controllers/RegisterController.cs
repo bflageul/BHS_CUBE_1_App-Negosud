@@ -7,43 +7,26 @@ using NegosudApp.PasswordHash;
 
 namespace NegosudApp.Controllers
 {
-	[ApiController]
-	[Route("[controller]")]
+    //[ApiController]
+    //[Route("[controller]")]
     public class RegisterController : Controller
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
         private readonly NegosudDbContext _context;
-        private readonly PwdHasher _pwdHasher;
+        private readonly IPwdHasher _pwdHasher;
 
         public RegisterController(
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager,
             NegosudDbContext context,
             PwdHasher pwdHasher)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
             _context = context;
             _pwdHasher = pwdHasher;
         }
 
-        //private readonly NegosudDbContext _context;
-        //public RegisterController(NegosudDbContext context)
-        //{
-        //    _context = context;
-        //}
 
-        //Register fonction
-        //public IActionResult Register()
-        //{
-        //    return View("../Home/Registered");
-        //}
-
-        [HttpPost("register")]
+        //[HttpPost("register")]
         public IActionResult Register(RegisterModel registerModel)
         {
-            User user = new()
+            User user = new User
             {
                 Username = registerModel.username,
                 Firstname = registerModel.firstname,
@@ -51,7 +34,7 @@ namespace NegosudApp.Controllers
                 HashPassword = _pwdHasher.Hash(registerModel.hashpassword)
             };
 
-            Address address = new()
+            Address address = new Address
             {
                 StreetNumber = registerModel.streetnumber,
                 WayType = registerModel.waytype,
@@ -61,7 +44,7 @@ namespace NegosudApp.Controllers
                 Country = registerModel.country
             };
 
-            Client client = new()
+            Client client = new Client
             {
                 Address = address,
                 Users = user,

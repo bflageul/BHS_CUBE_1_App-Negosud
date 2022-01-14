@@ -11,77 +11,49 @@ using Microsoft.Data.SqlClient;
 
 namespace NegosudApp.Controllers
 {
-    public class LogController : Controller
+   public class LogController : Controller
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
         private readonly NegosudDbContext _context;
-        private readonly PwdHasher _pwdHasher;
+        private readonly IPwdHasher _pwdHasher;
 
         public LogController(
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager,
             NegosudDbContext context,
             PwdHasher pwdHasher)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
             _context = context;
             _pwdHasher = pwdHasher;
         }
 
-
-// Login fonction
+        // Login method returning View
         public IActionResult Login()
         {
             return View("Error");
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> Login(string username, string password)
-        //{
-        //    string ConStr = _context.
-        //    SqlCommand cmd = new SqlCommand("Select count(*) from Register where Username= @Username", NegosudConStr);
-        //    }
+        // Login test from controller 
+        [HttpPost]
+        public IActionResult Login(LoginModel loginModel)
+        {
+            string username = loginModel.username;
+            string password = loginModel.hashpassword;
+            bool logResult = _pwdHasher.Check(username, password);
 
-
-
-
-
-
-
-        //// Login fonction
-        //public IActionResult Login()
-        //{
-        //    return View("Error");
-        //}
-
-        //[HttpPost]
-        //public async Task<IActionResult> Login(string username, string password)
-        //{
-        //    var user = await _userManager.FindByNameAsync(username);
-
-        //    if (user != null)
-        //    {
-        //        //sign in here
-        //        var signInResult = await _signInManager.PasswordSignInAsync(user, password, false, false);
-
-        //        if (signInResult.Succeeded)
-        //        {
-        //            //sign user here
-        //            return RedirectToAction("Index");
-        //        }
-        //    }
-
-        //    return RedirectToAction("Index");
-        //}
+            if (logResult is true)
+            {
+                return View("../Home/Logged");
+            }
+            else
+            {
+                return View("../Home/Register");
+            }
+        }
 
 
         //Logout fonction
-        public async Task<IActionResult> Logout()
-        {
-            await _signInManager.SignOutAsync();
-            return RedirectToAction("Index");
-        }
+        //public async Task<IActionResult> Logout()
+        //{
+        //    await _signInManager.SignOutAsync();
+        //    return RedirectToAction("Index");
+        //}
     }
 }
